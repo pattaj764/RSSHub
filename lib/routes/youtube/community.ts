@@ -9,7 +9,7 @@ import { isYouTubeChannelId } from './utils';
 
 export const route: Route = {
     path: '/community/:handle',
-    categories: ['social-media', 'popular'],
+    categories: ['social-media'],
     example: '/youtube/community/@JFlaMusic',
     parameters: { handle: 'YouTube handles or channel id' },
     name: 'Community',
@@ -35,7 +35,9 @@ async function handler(ctx) {
 
     const channelMetadata = ytInitialData.metadata.channelMetadataRenderer;
     const username = channelMetadata.title;
-    const communityTab = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs.find((tab) => tab.tabRenderer.endpoint.commandMetadata.webCommandMetadata.url.endsWith('/community'));
+    const communityTab = ytInitialData.contents.twoColumnBrowseResultsRenderer.tabs.find(
+        (tab) => tab.tabRenderer.endpoint.commandMetadata.webCommandMetadata.url.endsWith('/posts') || tab.tabRenderer.endpoint.commandMetadata.webCommandMetadata.url.endsWith('/community')
+    );
     const list = communityTab.tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents;
 
     if (list[0].messageRenderer) {
